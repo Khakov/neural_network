@@ -9,11 +9,12 @@ from keras.preprocessing import image
 from keras.applications.resnet50 import preprocess_input, decode_predictions
 import numpy as np
 
-models = [VGG16, Xception, VGG19, InceptionV3, MobileNet, ResNet50, MobileNetV2, MobileNet, InceptionResNetV2]
-for model_type in models:
+models = {'VGG16': VGG16, 'Xception': Xception, 'VGG19': VGG19, 'InceptionV3': InceptionV3, 'MobileNet': MobileNet,
+          'ResNet50': ResNet50, 'MobileNetV2': MobileNetV2, 'InceptionResNetV2': InceptionResNetV2}
+for key, model_type in models.items():
     model = model_type(weights='imagenet')
 
-    img_path = 'image/1.jpg'
+    img_path = 'image/8.jpg'
     img = image.load_img(img_path, target_size=(224, 224))
     x = image.img_to_array(img)
     x = np.expand_dims(x, axis=0)
@@ -22,4 +23,4 @@ for model_type in models:
     preds = model.predict(x)
     # decode the results into a list of tuples (class, description, probability)
     # (one such list for each sample in the batch)
-    print('Predicted:', decode_predictions(preds, top=3)[0])
+    print('Predicted for {} model: '.format(key), decode_predictions(preds, top=3)[0])
